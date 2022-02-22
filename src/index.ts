@@ -1,4 +1,5 @@
 import app from './app';
+import './models/user';
 
 const PORT = 3000;
 
