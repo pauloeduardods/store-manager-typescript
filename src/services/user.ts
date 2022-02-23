@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import { sign, SignOptions } from 'jsonwebtoken';
-import { User } from '../interfaces/user';
-import { create as createUser } from '../models/user';
-import { userValidation } from '../validations/user';
+import { User, UserLogin, UserInfo, UserPayload } from '../interfaces/user';
+import { create as createUser, getByUsername } from '../models/user';
+import { userValidation, loginValidation } from '../validations/user';
 import { ServicesResponse } from '../interfaces/servicesResponse';
-import { ServiceError } from '../utils/errorUtils';
+import { ServiceError, StatusCode } from '../utils/errorUtils';
 import { StatusCodeInterface } from '../interfaces/statusCode';
 
 dotenv.config();
@@ -28,14 +28,30 @@ export async function create(user: User): Promise<ServicesResponse> {
     throw new ServiceError('UNPROCCESSABLE_ENTITY', 'Level must be a number');
   }
   const userId = await createUser(user);
-  const payload = {
+  const payload: UserPayload = {
     id: userId,
     username: user.username,
   };
   const token: string = sign(payload, TOKEN, options);
-  return { code: 201, data: { token } };
+  return { code: StatusCode.CREATED, data: { token } };
 }
 
-export function sla(): void {
-
+export async function login(user: UserLogin): Promise<ServicesResponse> {
+  const validation = loginValidation.validate(user);
+  if (validation.error) {
+    throw new ServiceError(
+      validation.error.details[0].type as keyof StatusCodeInterface,
+      validation.error.details[0].message,
+    );
+  }
+  const userInfo: UserInfo = await getByUsername(user.username);
+  if (!userInfo || userInfo.password !== user.password) {
+    throw new ServiceError('UNAUTHORIZED', 'Username or password invalid');
+  }
+  const payload: UserPayload = {
+    id: userInfo.id,
+    username: user.username,
+  };
+  const token: string = sign(payload, TOKEN, options);
+  return { code: StatusCode.OK, data: { token } };
 }
