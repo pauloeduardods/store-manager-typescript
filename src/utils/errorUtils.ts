@@ -54,6 +54,18 @@ export const classeMessages = {
   type: 'Classe must be a string',
 };
 
+export const productNameMessages = {
+  required: 'Name is required',
+  min: 'Name must be longer than 2 characters',
+  type: 'Name must be a string',
+};
+
+export const productAmountMessages = {
+  required: 'Amount is required',
+  min: 'Amount must be longer than 2 characters',
+  type: 'Amount must be a string',
+};
+
 export const messages = {
   INTERNAL_SERVER_ERROR: 'Internal server error',
   TOKEN_NOT_FOUND: 'Token not found',
