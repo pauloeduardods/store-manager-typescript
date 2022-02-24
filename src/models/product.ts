@@ -29,3 +29,13 @@ export async function updateOrderId(productId: number, orderId: number): Promise
   const values = [orderId, productId];
   await mysql.execute(sql, values);
 }
+
+export async function getByOderId(oderId:number) {
+  const sql = `
+    SELECT * FROM Trybesmith.Products
+    WHERE orderId = ?
+  `;
+  const values = [oderId];
+  const [result] = await mysql.execute(sql, values);
+  return result as Product[];
+}

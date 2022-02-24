@@ -1,5 +1,6 @@
 import { ResultSetHeader } from 'mysql2';
 import mysql from './connection';
+import { IOrderResponse } from '../interfaces/order';
 
 export async function create(userId: number): Promise<number> {
   const sql = `
@@ -11,6 +12,13 @@ export async function create(userId: number): Promise<number> {
   return result.insertId;
 }
 
-export function sla() {
-
+export async function getById(id:number): Promise<IOrderResponse | undefined> {
+  const sql = `
+    SELECT * FROM Trybesmith.Orders
+    WHERE id = ?
+  `;
+  const values = [id];
+  const [result] = await mysql.execute(sql, values);
+  const [order] = result as IOrderResponse[];
+  return order;
 }
