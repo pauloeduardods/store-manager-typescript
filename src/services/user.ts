@@ -1,20 +1,10 @@
-import dotenv from 'dotenv';
-import { sign, SignOptions } from 'jsonwebtoken';
 import { User, UserLogin, UserInfo, UserPayload } from '../interfaces/user';
 import { create as createUser, getByUsername } from '../models/user';
 import { userValidation, loginValidation } from '../validations/user';
 import { ServicesResponse } from '../interfaces/servicesResponse';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
 import { StatusCodeInterface } from '../interfaces/statusCode';
-
-dotenv.config();
-
-const options:SignOptions = {
-  expiresIn: '1d',
-  algorithm: 'HS256',
-};
-
-const TOKEN:string = process.env.JWT_SECRET || 'secret';
+import { generateToken } from '../auth/token';
 
 export async function create(user: User): Promise<ServicesResponse> {
   const validation = userValidation.validate(user);
@@ -32,7 +22,7 @@ export async function create(user: User): Promise<ServicesResponse> {
     id: userId,
     username: user.username,
   };
-  const token: string = sign(payload, TOKEN, options);
+  const token = generateToken(payload);
   return { code: StatusCode.CREATED, data: { token } };
 }
 
@@ -52,6 +42,6 @@ export async function login(user: UserLogin): Promise<ServicesResponse> {
     id: userInfo.id,
     username: user.username,
   };
-  const token: string = sign(payload, TOKEN, options);
+  const token = generateToken(payload);
   return { code: StatusCode.OK, data: { token } };
 }

@@ -56,4 +56,6 @@ export const classeMessages = {
 
 export const messages = {
   INTERNAL_SERVER_ERROR: 'Internal server error',
+  TOKEN_NOT_FOUND: 'Token not found',
+  INVALID_TOKEN: 'Invalid token',
 };
