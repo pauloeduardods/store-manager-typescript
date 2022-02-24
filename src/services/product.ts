@@ -1,5 +1,5 @@
 import { IProduct } from '../interfaces/product';
-import { create as createProduct } from '../models/product';
+import { create as createProduct, getAll as getAllProducts } from '../models/product';
 import { ServicesResponse } from '../interfaces/servicesResponse';
 import productValidation from '../validations/product';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
@@ -24,6 +24,7 @@ export async function create(product: IProduct): Promise<ServicesResponse> {
   return { code: StatusCode.CREATED, data };
 }
 
-export function sla() {
-
+export async function getAll(): Promise<ServicesResponse> {
+  const products = await getAllProducts();
+  return { code: StatusCode.OK, data: products };
 }

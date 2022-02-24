@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import rescue from 'express-rescue';
-import { create as createProduct } from '../services/product';
+import { create as createProduct, getAll as getAllProducts } from '../services/product';
 
 export const create = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const { name, amount } = req.body;
@@ -8,6 +8,7 @@ export const create = rescue(async (req: Request, res: Response, _next: NextFunc
   res.status(response.code).json(response.data);
 });
 
-export function sla() {
-
-}
+export const getAll = rescue(async (req: Request, res: Response, _next: NextFunction) => {
+  const response = await getAllProducts();
+  res.status(response.code).json(response.data);
+});

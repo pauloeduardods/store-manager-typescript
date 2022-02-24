@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2';
 import mysql from './connection';
-import { IProduct } from '../interfaces/product';
+import { IProduct, Product } from '../interfaces/product';
 
 export async function create(product:IProduct): Promise<number> {
   const sql = `
@@ -12,6 +12,10 @@ export async function create(product:IProduct): Promise<number> {
   return result.insertId;
 }
 
-export function sla() {
-  
+export async function getAll(): Promise<Product[]> {
+  const sql = `
+    SELECT * FROM Trybesmith.Products
+  `;
+  const [result] = await mysql.execute(sql);
+  return result as Product[];
 }
