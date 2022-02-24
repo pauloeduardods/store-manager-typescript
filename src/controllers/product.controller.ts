@@ -5,10 +5,10 @@ import { create as createProduct, getAll as getAllProducts } from '../services/p
 export const create = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const { name, amount } = req.body;
   const response = await createProduct({ name, amount });
-  res.status(response.code).json(response.data);
+  return res.status(response.code).json(response.data).end();
 });
 
 export const getAll = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const response = await getAllProducts();
-  res.status(response.code).json(response.data);
+  return res.status(response.code).json(response.data).end();
 });

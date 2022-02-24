@@ -14,4 +14,6 @@ export interface StatusCodeInterface {
   readonly 'number.base': number;
   readonly 'number.min': number;
   readonly 'any.required': number;
+  readonly 'array.base': number;
+  readonly 'array.min': number;
 }

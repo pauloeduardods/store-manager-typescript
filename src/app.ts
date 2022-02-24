@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRouter from './routes/user.route';
 import loginRouter from './routes/login.route';
 import productRouter from './routes/product.route';
+import orderRouter from './routes/order.route';
 import errorMiddleware from './middleware/error.middleware';
 import authMiddleware from './middleware/auth.middleware';
 
@@ -20,6 +21,8 @@ app.use('/login', loginRouter);
 app.use(authMiddleware);
 
 app.use('/products', productRouter);
+
+app.use('/orders', orderRouter);
 
 app.use(errorMiddleware);
 

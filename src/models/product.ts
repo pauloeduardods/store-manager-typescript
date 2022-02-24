@@ -19,3 +19,13 @@ export async function getAll(): Promise<Product[]> {
   const [result] = await mysql.execute(sql);
   return result as Product[];
 }
+
+export async function updateOrderId(productId: number, orderId: number): Promise<void> {
+  const sql = `
+    UPDATE Trybesmith.Products
+    SET orderId = ?
+    WHERE id = ?
+  `;
+  const values = [orderId, productId];
+  await mysql.execute(sql, values);
+}

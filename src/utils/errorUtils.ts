@@ -28,6 +28,8 @@ export const StatusCode: StatusCodeInterface = {
   'any.required': 400,
   'number.base': 422,
   'number.min': 422,
+  'array.base': 422,
+  'array.min': 422,
 };
 
 export const usernameMessages = {
@@ -64,6 +66,12 @@ export const productAmountMessages = {
   required: 'Amount is required',
   min: 'Amount must be longer than 2 characters',
   type: 'Amount must be a string',
+};
+
+export const orderProductsMessages = {
+  required: 'Products is required',
+  min: 'Products can\'t be empty',
+  type: 'Products must be an array of numbers',
 };
 
 export const messages = {
