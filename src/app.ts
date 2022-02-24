@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import { create as createUser, login } from './controllers/user.controller';
-import ErrorMiddleware from './middleware/error.middleware';
+
+import userRouter from './routes/user.route';
+import loginRouter from './routes/login.route';
+import errorMiddleware from './middleware/error.middleware';
 import authMiddleware from './middleware/auth.middleware';
 
 const app = express();
@@ -10,12 +12,12 @@ app.use(cors());
 
 app.use(express.json());
 
-app.post('/users', createUser);
+app.use('/users', userRouter);
 
-app.post('/login', login);
+app.use('/login', loginRouter);
 
 app.use(authMiddleware);
 
-app.use(ErrorMiddleware);
+app.use(errorMiddleware);
 
 export default app;
