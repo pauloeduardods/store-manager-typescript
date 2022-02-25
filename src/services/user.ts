@@ -1,12 +1,14 @@
-import { User, UserLogin, UserInfo, UserPayload } from '../interfaces/user';
-import { create as createUser, getByUsername } from '../models/user';
+import { getRepository } from 'typeorm';
+import User from '../entity/User';
+
+import { UserLogin, UserInfo, UserPayload, IUser } from '../interfaces/user';
 import { userValidation, loginValidation } from '../validations/user';
 import { ServicesResponse } from '../interfaces/servicesResponse';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
 import { StatusCodeInterface } from '../interfaces/statusCode';
 import { generateToken } from '../auth/token';
 
-export async function create(user: User): Promise<ServicesResponse> {
+export async function create(user: IUser): Promise<ServicesResponse> {
   const validation = userValidation.validate(user);
   if (validation.error) {
     throw new ServiceError(
@@ -17,7 +19,8 @@ export async function create(user: User): Promise<ServicesResponse> {
   if (typeof user.level !== 'number') {
     throw new ServiceError('UNPROCCESSABLE_ENTITY', 'Level must be a number');
   }
-  const userId = await createUser(user);
+  const result = await getRepository(User).insert(user);
+  const userId = result.raw.insertId;
   const payload: UserPayload = {
     id: userId,
     username: user.username,
@@ -34,7 +37,8 @@ export async function login(user: UserLogin): Promise<ServicesResponse> {
       validation.error.details[0].message,
     );
   }
-  const userInfo: UserInfo = await getByUsername(user.username);
+  const userInfo: UserInfo | undefined = await getRepository(User)
+    .findOne({ where: { username: user.username } });
   if (!userInfo || userInfo.password !== user.password) {
     throw new ServiceError('UNAUTHORIZED', 'Username or password invalid');
   }

@@ -1,11 +1,13 @@
-import { create as createOrder, getById as getOrderById } from '../models/order';
-import { updateOrderId, getByOderId as getProductByOrderId } from '../models/product';
+import { getRepository } from 'typeorm';
+import Order from '../entity/Order';
+
+import { updateOrderId } from '../models/product';
+import { create as createOrder } from '../models/order';
 import { ServicesResponse } from '../interfaces/servicesResponse';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
 import { StatusCodeInterface } from '../interfaces/statusCode';
-import { IOrder, IOrderResponse } from '../interfaces/order';
+import { IOrder } from '../interfaces/order';
 import productsValidation from '../validations/order';
-import { Product } from '../interfaces/product';
 
 export async function create(products: IOrder, userId:number): Promise<ServicesResponse> {
   const validation = productsValidation.validate(products);
@@ -29,17 +31,16 @@ export async function create(products: IOrder, userId:number): Promise<ServicesR
 }
 
 export async function getById(oderId: number): Promise<ServicesResponse> {
-  const orderResult = await getOrderById(oderId);
-  if (!orderResult) {
+  const result = await getRepository(Order).findOne({
+    where: { id: oderId },
+    relations: ['products'],
+  });
+  if (!result) {
     throw new ServiceError('NOT_FOUND', 'Order not found');
   }
-  const { id, userId } = orderResult as IOrderResponse;
-  const result = await getProductByOrderId(oderId);
-  const products = result.map((product: Product) => product.id);
   const data = {
-    id,
-    userId,
-    products,
+    ...result,
+    products: result.products.map((product) => product.id),
   };
   return { code: StatusCode.OK, data };
 }

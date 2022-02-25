@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 
+import ormConnection from './connection/typeorm';
+
 import userRouter from './routes/user.route';
 import loginRouter from './routes/login.route';
 import productRouter from './routes/product.route';
 import orderRouter from './routes/order.route';
 import errorMiddleware from './middleware/error.middleware';
 import authMiddleware from './middleware/auth.middleware';
+
+ormConnection();
 
 const app = express();
 

@@ -3,7 +3,7 @@ import { IOrder } from '../interfaces/entity';
 
 @Entity('Products')
 export default class Product {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
