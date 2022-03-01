@@ -21,7 +21,7 @@ export default {
     'src/subscriber/*{.ts,.js}',
   ],
   cli: {
-    entitiesDir: 'src/models',
+    entitiesDir: 'src/entity',
     migrationsDir: 'src/migration',
     subscribersDir: 'src/subscriber',
   },
