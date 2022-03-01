@@ -12,17 +12,17 @@ export default {
   synchronize: false,
   logging: false,
   entities: [
-    './src/entity/*.ts',
+    '../entity/*{.ts,.js}',
   ],
   migrations: [
-    './src/migration/*.ts',
+    'src/migration/*{.ts,.js}',
   ],
   subscribers: [
-    './src/subscriber/*.ts',
+    'src/subscriber/*{.ts,.js}',
   ],
   cli: {
-    entitiesDir: './src/entity',
-    migrationsDir: './src/migration',
-    subscribersDir: './src/subscriber',
+    entitiesDir: 'src/models',
+    migrationsDir: 'src/migration',
+    subscribersDir: 'src/subscriber',
   },
 };
