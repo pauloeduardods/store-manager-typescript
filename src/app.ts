@@ -1,18 +1,21 @@
 import express from 'express';
 import cors from 'cors';
 
-import ormConnection from './connection/typeorm';
+// import ormConnection from './connection/typeorm';
 
 import userRouter from './routes/user.route';
 import loginRouter from './routes/login.route';
 import productRouter from './routes/product.route';
 import orderRouter from './routes/order.route';
+import connectionMiddleware from './middleware/connection.middleware';
 import errorMiddleware from './middleware/error.middleware';
 import authMiddleware from './middleware/auth.middleware';
 
-ormConnection();
+// ormConnection();
 
 const app = express();
+
+app.use(connectionMiddleware);
 
 app.use(cors());
 
