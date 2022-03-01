@@ -7,6 +7,7 @@ export default function error(err: Error, _req: Request, res: Response, _next: N
     const code = StatusCode[err.type];
     if (code) return res.status(code).send({ error: err.message }).end();
   }
+  console.log(err);
   res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
     error: messages.INTERNAL_SERVER_ERROR,
   });
