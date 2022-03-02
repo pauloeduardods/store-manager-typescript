@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import rescue from 'express-rescue';
 import { UserPayload } from '../interfaces/user';
 
-import { create as createOrder, getById as getOrderById } from '../services/order';
+import {
+  create as createOrder,
+  getById as getOrderById,
+  getAll as getAllOrders,
+} from '../services/order';
 
 export const create = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const { id: userId } = req.user as UserPayload;
@@ -14,5 +18,10 @@ export const create = rescue(async (req: Request, res: Response, _next: NextFunc
 export const getById = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const { id } = req.params;
   const response = await getOrderById(Number(id));
+  return res.status(response.code).json(response.data).end();
+});
+
+export const getAll = rescue(async (req: Request, res: Response, _next: NextFunction) => {
+  const response = await getAllOrders();
   return res.status(response.code).json(response.data).end();
 });

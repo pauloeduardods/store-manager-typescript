@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import Product from '../entity/Products';
+import Product from '../entity/Product';
 
 import { IProduct } from '../interfaces/entity';
 import { ServicesResponse } from '../interfaces/servicesResponse';

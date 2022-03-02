@@ -1,8 +1,7 @@
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import Order from '../entity/Order';
+import Product from '../entity/Product';
 
-import { updateOrderId } from '../models/product';
-import { create as createOrder } from '../models/order';
 import { ServicesResponse } from '../interfaces/servicesResponse';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
 import { StatusCodeInterface } from '../interfaces/statusCode';
@@ -17,16 +16,16 @@ export async function create(products: IOrder, userId:number): Promise<ServicesR
       validation.error.details[0].message,
     );
   }
-  const orderId = await createOrder(userId);
-  const arrayPromise = products.products.map(async (productId: number) =>
-    updateOrderId(productId, orderId));
-  await Promise.all(arrayPromise);
-  const data = {
-    order: {
-      userId,
-      products: products.products,
-    },
-  };
+  await getConnection().transaction(async (manager) => {
+    const order = await manager.createQueryBuilder().insert().into(Order).values({ userId }).execute()
+    const orderId = order.raw.insertId;
+    const productsArray = products.products.map(async (productId) => {
+      manager.createQueryBuilder().update(Product)
+        .set({ orderId }).where({ id: productId }).execute();
+    });
+    await Promise.all(productsArray);
+  });
+  const data = { order: { userId, products: products.products } };
   return { code: StatusCode.CREATED, data };
 }
 
@@ -42,5 +41,16 @@ export async function getById(oderId: number): Promise<ServicesResponse> {
     ...result,
     products: result.products.map((product) => product.id),
   };
+  return { code: StatusCode.OK, data };
+}
+
+export async function getAll(): Promise<ServicesResponse> {
+  const result = await getRepository(Order).find({
+    relations: ['products'],
+  });
+  const data = result.map((order) => ({
+    ...order,
+    products: order.products.map((product) => product.id),
+  }));
   return { code: StatusCode.OK, data };
 }

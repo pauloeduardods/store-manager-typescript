@@ -1,9 +1,11 @@
 import express from 'express';
-import { create, getById } from '../controllers/order.controller';
+import { create, getById, getAll } from '../controllers/order.controller';
 
 const router = express.Router();
 
 router.post('/', create);
+
+router.get('/', getAll);
 
 router.get('/:id', getById);
 
