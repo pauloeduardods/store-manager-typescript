@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import Error from '../interfaces/error';
+import { IError } from '../interfaces';
 import { StatusCode, messages } from '../utils/errorUtils';
 
-export default function error(err: Error, _req: Request, res: Response, _next: NextFunction) {
+export default function error(err: IError, _req: Request, res: Response, _next: NextFunction) {
   if (err.type) {
     const code = StatusCode[err.type];
     if (code) return res.status(code).send({ error: err.message }).end();

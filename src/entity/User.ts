@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { IOrder } from '../interfaces/entity';
+import { IOrder } from '../interfaces';
 
 @Entity('Users')
 export default class User {

@@ -1,6 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import rescue from 'express-rescue';
-import { create as createProduct, getAll as getAllProducts } from '../services/product';
+import {
+  validateProduct,
+  create as createProduct,
+  getAll as getAllProducts,
+} from '../services/product';
+
+export const validateNewProduct = rescue((req: Request, _res: Response, next: NextFunction) => {
+  const { name, amount } = req.body;
+  validateProduct({ name, amount });
+  next();
+});
 
 export const create = rescue(async (req: Request, res: Response, _next: NextFunction) => {
   const { name, amount } = req.body;

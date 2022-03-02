@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { IOrder } from '../interfaces/entity';
+import { IOrder } from '../interfaces';
 
 @Entity('Products')
 export default class Product {

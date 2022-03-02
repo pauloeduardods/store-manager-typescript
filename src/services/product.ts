@@ -1,25 +1,21 @@
 import { getRepository } from 'typeorm';
 import Product from '../entity/Product';
 
-import { IProduct } from '../interfaces/entity';
-import { ServicesResponse } from '../interfaces/servicesResponse';
+import { IProduct, IProductCreate, IServicesResponse, IStatusCode } from '../interfaces';
 import productValidation from '../validations/product';
 import { ServiceError, StatusCode } from '../utils/errorUtils';
-import { StatusCodeInterface } from '../interfaces/statusCode';
 
-interface Sla {
-  name: string;
-  amount: string;
-}
-
-export async function create(product:Sla): Promise<ServicesResponse> {
+export function validateProduct(product: IProductCreate):void {
   const validation = productValidation.validate(product);
   if (validation.error) {
     throw new ServiceError(
-      validation.error.details[0].type as keyof StatusCodeInterface,
+      validation.error.details[0].type as keyof IStatusCode,
       validation.error.details[0].message,
     );
   }
+}
+
+export async function create(product: IProductCreate): Promise<IServicesResponse> {
   const result = await getRepository(Product).insert(product);
   const productId = result.raw.insertId;
   const data = {
@@ -32,7 +28,7 @@ export async function create(product:Sla): Promise<ServicesResponse> {
   return { code: StatusCode.CREATED, data };
 }
 
-export async function getAll(): Promise<ServicesResponse> {
+export async function getAll(): Promise<IServicesResponse> {
   const products: IProduct[] = await getRepository(Product).find();
   return { code: StatusCode.OK, data: products };
 }

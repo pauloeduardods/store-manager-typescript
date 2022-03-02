@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { IProduct, IUser } from '../interfaces/entity';
+import { IProduct, IUser } from '../interfaces';
 
 @Entity('Orders')
 export default class Order {

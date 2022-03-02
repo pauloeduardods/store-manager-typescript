@@ -1,9 +1,9 @@
 import express from 'express';
-import { create, getAll } from '../controllers/product.controller';
+import { validateNewProduct, create, getAll } from '../controllers/product.controller';
 
 const router = express.Router();
 
-router.post('/', create);
+router.post('/', validateNewProduct, create);
 
 router.get('/', getAll);
 

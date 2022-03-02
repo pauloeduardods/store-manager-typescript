@@ -1,9 +1,9 @@
-import { UserPayload } from '../../interfaces/user';
+import { IUserPayload } from '../../interfaces';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserPayload;
+      user?: IUserPayload;
     }
   }
 }

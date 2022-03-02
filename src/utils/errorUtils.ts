@@ -1,18 +1,18 @@
-import { StatusCodeInterface } from '../interfaces/statusCode';
+import { IStatusCode } from '../interfaces';
 
 export class ServiceError extends Error {
-  type: keyof StatusCodeInterface;
+  type: keyof IStatusCode;
 
   message: string;
 
-  constructor(type: keyof StatusCodeInterface, message: string) {
+  constructor(type: keyof IStatusCode, message: string) {
     super();
     this.type = type;
     this.message = message;
   }
 }
 
-export const StatusCode: StatusCodeInterface = {
+export const StatusCode: IStatusCode = {
   OK: 200,
   CREATED: 201,
   NO_CONTENT: 204,

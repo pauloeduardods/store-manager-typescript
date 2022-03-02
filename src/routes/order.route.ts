@@ -1,9 +1,9 @@
 import express from 'express';
-import { create, getById, getAll } from '../controllers/order.controller';
+import { validateNewOrder, create, getById, getAll } from '../controllers/order.controller';
 
 const router = express.Router();
 
-router.post('/', create);
+router.post('/', validateNewOrder, create);
 
 router.get('/', getAll);
 
