@@ -4,9 +4,6 @@ Link para a aplicação: https://pauloedsg.com/recipes-app/
 
 Projeto consistia em fazer uma API REST para um e-commerce, onde podemos consultar editar excluir ou adicionar produtos, vendas ou usuarios
 
-<img src="./Recipes-App.png"/>
-
-
 ## Aprendizados
  * TypeScript
  * Express
