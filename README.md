@@ -1,14 +1,12 @@
 <h1 align="center">Store Manager</h1>
 
-Link para a aplicação: https://pauloedsg.com/recipes-app/
-
 Projeto consistia em fazer uma API REST para um e-commerce, onde podemos consultar editar excluir ou adicionar produtos, vendas ou usuarios
 
 ## Aprendizados
  * TypeScript
  * Express
  * JWT
- * MySQL
+ * TypeORM
 
 <h2 align="center">Como rodar o projeto</h2>
 
